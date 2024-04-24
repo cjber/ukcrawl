@@ -1,0 +1,96 @@
+services:
+  ukcrawl-postgresql:
+    image: postgres:11
+    container_name: ukcrawl-postgresql
+    environment:
+      POSTGRES_USER: "postgres_user"
+      POSTGRES_PASSWORD: "postgres_password"
+      POSTGRES_DB: "postgres_db"
+    networks:
+      - ukcrawl-network
+
+  ukcrawl-code:
+    container_name: ukcrawl-code
+    restart: always
+    build:
+      context: .
+      dockerfile: Containerfile
+    image: ukcrawl
+    devices:
+      - nvidia.com/gpu=0
+    entrypoint:
+      - dagster
+      - api
+      - grpc
+      - -h
+      - "0.0.0.0"
+      - -p
+      - "4000"
+      - -m
+      - src
+    environment:
+      DAGSTER_POSTGRES_USER: "postgres_user"
+      DAGSTER_POSTGRES_PASSWORD: "postgres_password"
+      DAGSTER_POSTGRES_DB: "postgres_db"
+      DAGSTER_CURRENT_IMAGE: "ukcrawl"
+    volumes:
+      - ./src:/opt/dagster/app/src
+      - ./data:/opt/dagster/app/data
+    networks:
+      - ukcrawl-network
+
+  ukcrawl-server:
+    container_name: ukcrawl-server
+    build:
+      context: .
+      dockerfile: Containerfile
+    devices:
+      - nvidia.com/gpu=0
+    entrypoint:
+      - dagster-webserver
+      - -h
+      - "0.0.0.0"
+      - -p
+      - "3000"
+    expose:
+      - "3000"
+    ports:
+      - 3000:3000
+    environment:
+      DAGSTER_POSTGRES_USER: "postgres_user"
+      DAGSTER_POSTGRES_PASSWORD: "postgres_password"
+      DAGSTER_POSTGRES_DB: "postgres_db"
+    volumes:
+      - ./src:/opt/dagster/app/src
+      - ./data:/opt/dagster/app/data
+    networks:
+      - ukcrawl-network
+
+  ukcrawl-daemon:
+    container_name: dagster-daemon
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Containerfile
+    entrypoint:
+      - dagster-daemon
+      - run
+    devices:
+      - nvidia.com/gpu=0
+    environment:
+      DAGSTER_POSTGRES_USER: "postgres_user"
+      DAGSTER_POSTGRES_PASSWORD: "postgres_password"
+      DAGSTER_POSTGRES_DB: "postgres_db"
+    volumes:
+      - ./src:/opt/dagster/app/src
+      - ./data:/opt/dagster/app/data
+    networks:
+      - ukcrawl-network
+    depends_on: 
+      - crawl-postgresql
+      - ukcrawl-code
+
+networks:
+  ukcrawl-network:
+    driver: bridge
+    name: ukcrawl-network
