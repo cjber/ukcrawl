@@ -12,5 +12,3 @@ WORKDIR /opt/dagster/app
 
 COPY workspace.yaml requirements.txt pyproject.toml .env ./
 RUN /root/.cargo/bin/uv pip install --no-cache -r requirements.txt
-
-COPY ./src/ ./src/

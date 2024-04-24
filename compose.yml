@@ -34,6 +34,7 @@ services:
       DAGSTER_POSTGRES_DB: "postgres_db"
       DAGSTER_CURRENT_IMAGE: "ukcrawl"
     volumes:
+      - ./src:/opt/dagster/app/src
       - ./data:/opt/dagster/app/data
     networks:
       - ukcrawl-network
@@ -60,6 +61,7 @@ services:
       DAGSTER_POSTGRES_PASSWORD: "postgres_password"
       DAGSTER_POSTGRES_DB: "postgres_db"
     volumes:
+      - ./src:/opt/dagster/app/src
       - ./data:/opt/dagster/app/data
     networks:
       - ukcrawl-network
@@ -80,6 +82,7 @@ services:
       DAGSTER_POSTGRES_PASSWORD: "postgres_password"
       DAGSTER_POSTGRES_DB: "postgres_db"
     volumes:
+      - ./src:/opt/dagster/app/src
       - ./data:/opt/dagster/app/data
     networks:
       - ukcrawl-network
