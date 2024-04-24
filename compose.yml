@@ -87,7 +87,7 @@ services:
     networks:
       - ukcrawl-network
     depends_on: 
-      - crawl-postgresql
+      - ukcrawl-postgresql
       - ukcrawl-code
 
 networks:
