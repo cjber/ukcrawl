@@ -67,7 +67,7 @@ services:
       - ukcrawl-network
 
   ukcrawl-daemon:
-    container_name: dagster-daemon
+    container_name: ukcrawl-daemon
     restart: on-failure
     build:
       context: .
