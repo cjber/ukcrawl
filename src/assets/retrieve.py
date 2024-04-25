@@ -137,8 +137,6 @@ def uk_files(context: AssetExecutionContext, local_dask: DaskResource) -> None:
     with open(wet_list) as f:
         files = f.read().split("\n")
 
-    # TEMP: testing
-    files = files[:200]
     client = local_dask.make_dask_cluster()
 
     with client:
