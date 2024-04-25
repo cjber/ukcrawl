@@ -21,13 +21,12 @@ def release_sensor(context: SensorEvaluationContext):
         yield SkipReason(f"{Paths.RELEASES} does not exist.")
         return
 
-    runs = context.instance.get_runs(
+    if context.instance.get_runs(
         filters=RunsFilter(
             job_name=extract_uk_urls_job.name,
             statuses=[DagsterRunStatus.QUEUED, DagsterRunStatus.STARTED],
         ),
-    )
-    if runs:
+    ):
         yield SkipReason(f"{extract_uk_urls_job.name} is already running or queued.")
         return
 
@@ -37,30 +36,28 @@ def release_sensor(context: SensorEvaluationContext):
     context.instance.add_dynamic_partitions(
         archive_partition.name or "archive", releases
     )
-    remaining_releases = [
+    if remaining_releases := [
         release for release in releases if not (Paths.DONE / f"{release}.done").exists()
-    ]
-    if remaining_releases:
+    ]:
         yield RunRequest(partition_key=remaining_releases[0])
 
 
 @asset_sensor(
     asset_key=AssetKey("combined_files"),
     job=process_job,
-    default_status=DefaultSensorStatus.RUNNING,
+    # default_status=DefaultSensorStatus.RUNNING,
 )
 def process_sensor(context: SensorEvaluationContext):
     if not Paths.RELEASES.exists():
         yield SkipReason(f"{Paths.RELEASES} does not exist.")
         return
 
-    runs = context.instance.get_runs(
+    if context.instance.get_runs(
         filters=RunsFilter(
             job_name=process_job.name,
             statuses=[DagsterRunStatus.QUEUED, DagsterRunStatus.STARTED],
         ),
-    )
-    if runs:
+    ):
         yield SkipReason(f"{process_job.name} is already running or queued.")
         return
 
@@ -70,12 +67,11 @@ def process_sensor(context: SensorEvaluationContext):
     context.instance.add_dynamic_partitions(
         archive_partition.name or "archive", releases
     )
-    remaining_releases = [
+    if remaining_releases := [
         release
         for release in releases
         if (not (Paths.NER / f"{release}_ner.parquet").exists())
         or (not (Paths.PC / f"{release}_pc.parquet").exists())
         or (not (Paths.CLASS / f"{release}_class.parquet").exists())
-    ]
-    if remaining_releases:
+    ]:
         yield RunRequest(partition_key=remaining_releases[0])
