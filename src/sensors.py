@@ -45,7 +45,7 @@ def release_sensor(context: SensorEvaluationContext):
 @asset_sensor(
     asset_key=AssetKey("combined_files"),
     job=process_job,
-    # default_status=DefaultSensorStatus.RUNNING,
+    default_status=DefaultSensorStatus.RUNNING,
 )
 def process_sensor(context: SensorEvaluationContext):
     if not Paths.RELEASES.exists():
@@ -70,8 +70,11 @@ def process_sensor(context: SensorEvaluationContext):
     if remaining_releases := [
         release
         for release in releases
-        if (not (Paths.NER / f"{release}_ner.parquet").exists())
-        or (not (Paths.PC / f"{release}_pc.parquet").exists())
-        or (not (Paths.CLASS / f"{release}_class.parquet").exists())
+        if (
+            (not (Paths.NER / f"{release}_ner.parquet").exists())
+            or (not (Paths.PC / f"{release}_pc.parquet").exists())
+            or (not (Paths.CLASS / f"{release}_class.parquet").exists())
+        )
+        and (Paths.ARCHIVE / f"{release}.parquet").exists()
     ]:
         yield RunRequest(partition_key=remaining_releases[0])
