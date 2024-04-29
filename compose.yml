@@ -18,6 +18,8 @@ services:
     image: ukcrawl
     devices:
       - nvidia.com/gpu=all
+    security_opt:
+      - "label:disable"
     entrypoint:
       - dagster
       - api
@@ -46,6 +48,8 @@ services:
       dockerfile: Containerfile
     devices:
       - nvidia.com/gpu=all
+    security_opt:
+      - "label:disable"
     entrypoint:
       - dagster-webserver
       - -h
@@ -77,6 +81,8 @@ services:
       - run
     devices:
       - nvidia.com/gpu=all
+    security_opt:
+      - "label:disable"
     environment:
       DAGSTER_POSTGRES_USER: "postgres_user"
       DAGSTER_POSTGRES_PASSWORD: "postgres_password"
