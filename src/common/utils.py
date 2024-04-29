@@ -17,7 +17,7 @@ class Consts:
     DELIMITER = "/"
 
     UK_URL = ".uk/"
-    ARCHIVE_YEARS = ["2019", "2020", "2021", "2023", "2024"]
+    ARCHIVE_YEARS = ["2019", "2020", "2021", "2022", "2023", "2024"]
 
     PCRE = r"[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}"
 
