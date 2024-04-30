@@ -50,10 +50,6 @@ def releases(s3: S3Resource) -> MaterializeResult:
     return MaterializeResult(metadata={"num_releases": len(complete_releases)})
 
 
-def _skip_extraction(release):
-    return (Paths.DONE / f"{release}.done").exists()
-
-
 @asset(
     partitions_def=archive_partition,
     deps=[releases],
@@ -64,7 +60,7 @@ def _skip_extraction(release):
 def wet_files_list(context: AssetExecutionContext, s3: S3Resource) -> MaterializeResult:
     release = context.partition_key
 
-    if _skip_extraction(release):
+    if (Paths.DONE / f"{release}.done").exists():
         context.log.info(f"Skipping {release}")
         return MaterializeResult(metadata={"num_files": "Unknown"})
 
