@@ -8,6 +8,8 @@
 #   with-sources: false
 
 -e file:.
+accelerate==0.29.3
+    # via transformers
 aiohttp==3.9.5
     # via datasets
     # via fsspec
@@ -27,6 +29,8 @@ attrs==23.2.0
     # via aiohttp
 backoff==2.2.1
     # via gql
+beautifulsoup4==4.12.3
+    # via ukcrawl
 bokeh==3.4.1
     # via dask
 boto3==1.34.90
@@ -79,9 +83,11 @@ dask==2024.4.2
 dask-expr==1.0.12
     # via dask
 datasets==2.19.0
+    # via evaluate
     # via ukcrawl
 dill==0.3.8
     # via datasets
+    # via evaluate
     # via multiprocess
 distributed==2024.4.2
     # via dask
@@ -92,6 +98,8 @@ docker-image-py==0.1.12
 docstring-parser==0.16
     # via dagster
 duckdb==0.10.2
+    # via ukcrawl
+evaluate==0.4.2
     # via ukcrawl
 filelock==3.13.4
     # via datasets
@@ -105,6 +113,7 @@ frozenlist==1.4.1
 fsspec==2024.3.1
     # via dask
     # via datasets
+    # via evaluate
     # via huggingface-hub
     # via torch
     # via universal-pathlib
@@ -130,7 +139,9 @@ h11==0.14.0
 httptools==0.6.1
     # via uvicorn
 huggingface-hub==0.22.2
+    # via accelerate
     # via datasets
+    # via evaluate
     # via tokenizers
     # via transformers
 humanfriendly==10.0
@@ -149,9 +160,13 @@ jinja2==3.1.3
 jmespath==1.0.1
     # via boto3
     # via botocore
+joblib==1.4.0
+    # via scikit-learn
 locket==1.0.0
     # via distributed
     # via partd
+lxml==5.2.1
+    # via ukcrawl
 lz4==4.3.3
     # via dask
 mako==1.3.3
@@ -172,15 +187,20 @@ multidict==6.0.5
     # via yarl
 multiprocess==0.70.16
     # via datasets
+    # via evaluate
 networkx==3.3
     # via torch
 numpy==1.26.4
+    # via accelerate
     # via bokeh
     # via contourpy
     # via dask
     # via datasets
+    # via evaluate
     # via pandas
     # via pyarrow
+    # via scikit-learn
+    # via scipy
     # via transformers
 nvidia-cublas-cu12==12.1.3.1
     # via nvidia-cudnn-cu12
@@ -211,6 +231,7 @@ nvidia-nvjitlink-cu12==12.4.127
 nvidia-nvtx-cu12==12.1.105
     # via torch
 packaging==24.0
+    # via accelerate
     # via bokeh
     # via dagster
     # via dagster-aws
@@ -218,6 +239,7 @@ packaging==24.0
     # via datasets
     # via distributed
     # via docker
+    # via evaluate
     # via huggingface-hub
     # via transformers
 pandas==2.2.2
@@ -225,6 +247,7 @@ pandas==2.2.2
     # via dask
     # via dask-expr
     # via datasets
+    # via evaluate
 partd==1.4.1
     # via dask
 pendulum==3.0.0
@@ -237,6 +260,7 @@ protobuf==4.25.3
     # via dagster
     # via grpcio-health-checking
 psutil==5.9.8
+    # via accelerate
     # via distributed
 psycopg2-binary==2.9.9
     # via dagster-postgres
@@ -268,6 +292,7 @@ pytz==2024.1
     # via dagster
     # via pandas
 pyyaml==6.0.1
+    # via accelerate
     # via bokeh
     # via dagster
     # via dask
@@ -285,6 +310,7 @@ requests==2.31.0
     # via dagster-graphql
     # via datasets
     # via docker
+    # via evaluate
     # via gql
     # via huggingface-hub
     # via requests-file
@@ -302,7 +328,12 @@ rich==13.7.1
 s3transfer==0.10.1
     # via boto3
 safetensors==0.4.3
+    # via accelerate
     # via transformers
+scikit-learn==1.4.2
+    # via ukcrawl
+scipy==1.13.0
+    # via scikit-learn
 setuptools==69.5.1
     # via dagster
 six==1.16.0
@@ -313,6 +344,8 @@ sniffio==1.3.1
     # via anyio
 sortedcontainers==2.4.0
     # via distributed
+soupsieve==2.5
+    # via beautifulsoup4
 sqlalchemy==2.0.29
     # via alembic
     # via dagster
@@ -327,6 +360,8 @@ tabulate==0.9.0
     # via dagster
 tblib==3.0.0
     # via distributed
+threadpoolctl==3.5.0
+    # via scikit-learn
 time-machine==2.14.1
     # via pendulum
 tldextract==5.1.2
@@ -342,6 +377,8 @@ toolz==0.12.1
 toposort==1.10
     # via dagster
 torch==2.2.2
+    # via accelerate
+    # via transformers
     # via ukcrawl
 tornado==6.4
     # via bokeh
@@ -349,6 +386,7 @@ tornado==6.4
 tqdm==4.66.2
     # via dagster
     # via datasets
+    # via evaluate
     # via huggingface-hub
     # via transformers
 transformers==4.40.1
@@ -385,6 +423,7 @@ websockets==12.0
     # via uvicorn
 xxhash==3.4.1
     # via datasets
+    # via evaluate
 xyzservices==2024.4.0
     # via bokeh
 yarl==1.9.4
