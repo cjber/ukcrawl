@@ -29,19 +29,22 @@ asttokens==2.4.1
     # via stack-data
 attrs==23.2.0
     # via aiohttp
+    # via jsonschema
+    # via referencing
 backoff==2.2.1
     # via gql
 beautifulsoup4==4.12.3
     # via ukcrawl
 bokeh==3.4.1
     # via dask
-boto3==1.34.90
+boto3==1.34.69
     # via dagster-aws
-botocore==1.34.90
+botocore==1.34.69
     # via boto3
     # via s3transfer
 certifi==2024.2.2
     # via requests
+    # via sentry-sdk
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
@@ -55,39 +58,44 @@ cloudpickle==3.0.0
     # via distributed
 coloredlogs==14.0
     # via dagster
+comet-ml==3.41.0
+    # via ukcrawl
+configobj==5.0.8
+    # via everett
 contourpy==1.2.1
     # via bokeh
-croniter==2.0.5
+croniter==1.4.1
     # via dagster
-dagster==1.7.2
+dagster==1.7.3
     # via dagster-aws
     # via dagster-docker
     # via dagster-graphql
     # via dagster-postgres
     # via dagster-webserver
     # via ukcrawl
-dagster-aws==0.23.2
+dagster-aws==0.23.3
     # via ukcrawl
-dagster-docker==0.23.2
+dagster-docker==0.23.3
     # via ukcrawl
-dagster-graphql==1.7.2
+dagster-graphql==1.7.3
     # via dagster-webserver
-dagster-pipes==1.7.2
+dagster-pipes==1.7.3
     # via dagster
-dagster-postgres==0.23.2
+dagster-postgres==0.23.3
     # via ukcrawl
-dagster-webserver==1.7.2
+dagster-webserver==1.7.3
     # via ukcrawl
 dask==2024.4.2
     # via dask-expr
     # via distributed
     # via ukcrawl
-dask-expr==1.0.12
+dask-expr==1.0.14
     # via dask
 datasets==2.19.0
     # via evaluate
     # via ukcrawl
 decorator==5.1.1
+    # via ipdb
     # via ipython
 dill==0.3.8
     # via datasets
@@ -95,7 +103,7 @@ dill==0.3.8
     # via multiprocess
 distributed==2024.4.2
     # via dask
-docker==7.0.0
+docker==6.1.3
     # via dagster-docker
 docker-image-py==0.1.12
     # via dagster-docker
@@ -103,11 +111,15 @@ docstring-parser==0.16
     # via dagster
 duckdb==0.10.2
     # via ukcrawl
+dulwich==0.22.1
+    # via comet-ml
 evaluate==0.4.2
     # via ukcrawl
+everett==3.1.0
+    # via comet-ml
 executing==2.0.1
     # via stack-data
-filelock==3.13.4
+filelock==3.14.0
     # via datasets
     # via huggingface-hub
     # via tldextract
@@ -116,11 +128,13 @@ filelock==3.13.4
 frozenlist==1.4.1
     # via aiohttp
     # via aiosignal
-fsspec==2024.3.1
+fsspec==2023.12.2
     # via dask
     # via datasets
     # via evaluate
     # via huggingface-hub
+    # via lightning
+    # via pytorch-lightning
     # via torch
     # via universal-pathlib
 gql==3.5.0
@@ -157,7 +171,10 @@ idna==3.7
     # via requests
     # via tldextract
     # via yarl
-ipython==8.23.0
+ipdb==0.13.13
+    # via ukcrawl
+ipython==8.24.0
+    # via ipdb
 jedi==0.19.1
     # via ipython
 jinja2==3.1.3
@@ -171,6 +188,16 @@ jmespath==1.0.1
     # via botocore
 joblib==1.4.0
     # via scikit-learn
+jsonschema==4.21.1
+    # via comet-ml
+jsonschema-specifications==2023.12.1
+    # via jsonschema
+lightning==2.2.3
+    # via ukcrawl
+lightning-utilities==0.11.2
+    # via lightning
+    # via pytorch-lightning
+    # via torchmetrics
 locket==1.0.0
     # via distributed
     # via partd
@@ -208,10 +235,13 @@ numpy==1.26.4
     # via dask
     # via datasets
     # via evaluate
+    # via lightning
     # via pandas
     # via pyarrow
+    # via pytorch-lightning
     # via scikit-learn
     # via scipy
+    # via torchmetrics
     # via transformers
 nvidia-cublas-cu12==12.1.3.1
     # via nvidia-cudnn-cu12
@@ -234,7 +264,7 @@ nvidia-cusolver-cu12==11.4.5.107
 nvidia-cusparse-cu12==12.1.0.106
     # via nvidia-cusolver-cu12
     # via torch
-nvidia-nccl-cu12==2.19.3
+nvidia-nccl-cu12==2.20.5
     # via torch
 nvidia-nvjitlink-cu12==12.4.127
     # via nvidia-cusolver-cu12
@@ -252,6 +282,10 @@ packaging==24.0
     # via docker
     # via evaluate
     # via huggingface-hub
+    # via lightning
+    # via lightning-utilities
+    # via pytorch-lightning
+    # via torchmetrics
     # via transformers
 pandas==2.2.2
     # via bokeh
@@ -269,7 +303,7 @@ pexpect==4.9.0
     # via ipython
 pillow==10.3.0
     # via bokeh
-polars==0.20.22
+polars==0.20.23
     # via ukcrawl
 prompt-toolkit==3.0.43
     # via ipython
@@ -278,6 +312,7 @@ protobuf==4.25.3
     # via grpcio-health-checking
 psutil==5.9.8
     # via accelerate
+    # via comet-ml
     # via distributed
 psycopg2-binary==2.9.9
     # via dagster-postgres
@@ -299,6 +334,8 @@ pydantic-core==2.18.2
 pygments==2.17.2
     # via ipython
     # via rich
+python-box==6.1.0
+    # via comet-ml
 python-dateutil==2.9.0.post0
     # via botocore
     # via croniter
@@ -309,8 +346,9 @@ python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
     # via dagster
     # via uvicorn
+pytorch-lightning==2.2.3
+    # via lightning
 pytz==2024.1
-    # via croniter
     # via dagster
     # via pandas
 pyyaml==6.0.1
@@ -321,18 +359,25 @@ pyyaml==6.0.1
     # via datasets
     # via distributed
     # via huggingface-hub
+    # via lightning
+    # via pytorch-lightning
     # via transformers
     # via uvicorn
-regex==2024.4.16
+referencing==0.35.0
+    # via jsonschema
+    # via jsonschema-specifications
+regex==2024.4.28
     # via docker-image-py
     # via transformers
 requests==2.31.0
+    # via comet-ml
     # via dagster
     # via dagster-aws
     # via dagster-graphql
     # via datasets
     # via docker
     # via evaluate
+    # via fsspec
     # via gql
     # via huggingface-hub
     # via requests-file
@@ -342,11 +387,16 @@ requests==2.31.0
 requests-file==2.0.0
     # via tldextract
 requests-toolbelt==1.0.0
+    # via comet-ml
     # via gql
 retrying==1.3.4
     # via ukcrawl
 rich==13.7.1
+    # via comet-ml
     # via dagster
+rpds-py==0.18.0
+    # via jsonschema
+    # via referencing
 s3transfer==0.10.1
     # via boto3
 safetensors==0.4.3
@@ -356,10 +406,21 @@ scikit-learn==1.4.2
     # via ukcrawl
 scipy==1.13.0
     # via scikit-learn
+semantic-version==2.10.0
+    # via comet-ml
+sentry-sdk==2.0.1
+    # via comet-ml
 setuptools==69.5.1
+    # via comet-ml
     # via dagster
+    # via dulwich
+    # via lightning-utilities
+simplejson==3.19.2
+    # via comet-ml
 six==1.16.0
     # via asttokens
+    # via comet-ml
+    # via configobj
     # via python-dateutil
     # via retrying
     # via warcio
@@ -402,10 +463,16 @@ toolz==0.12.1
     # via partd
 toposort==1.10
     # via dagster
-torch==2.2.2
+torch==2.3.0
     # via accelerate
+    # via lightning
+    # via pytorch-lightning
+    # via torchmetrics
     # via transformers
     # via ukcrawl
+torchmetrics==1.3.2
+    # via lightning
+    # via pytorch-lightning
 tornado==6.4
     # via bokeh
     # via distributed
@@ -414,6 +481,8 @@ tqdm==4.66.2
     # via datasets
     # via evaluate
     # via huggingface-hub
+    # via lightning
+    # via pytorch-lightning
     # via transformers
 traitlets==5.14.3
     # via ipython
@@ -424,8 +493,11 @@ typing-extensions==4.11.0
     # via alembic
     # via dagster
     # via huggingface-hub
+    # via lightning
+    # via lightning-utilities
     # via pydantic
     # via pydantic-core
+    # via pytorch-lightning
     # via sqlalchemy
     # via torch
 tzdata==2024.1
@@ -435,9 +507,12 @@ universal-pathlib==0.2.2
     # via dagster
 urllib3==2.2.1
     # via botocore
+    # via comet-ml
     # via distributed
     # via docker
+    # via dulwich
     # via requests
+    # via sentry-sdk
 uvicorn==0.29.0
     # via dagster-webserver
 uvloop==0.19.0
@@ -450,8 +525,15 @@ watchfiles==0.21.0
     # via uvicorn
 wcwidth==0.2.13
     # via prompt-toolkit
-websockets==12.0
+websocket-client==1.3.3
+    # via comet-ml
+    # via docker
+websockets==11.0.3
     # via uvicorn
+wrapt==1.16.0
+    # via comet-ml
+wurlitzer==3.1.0
+    # via comet-ml
 xxhash==3.4.1
     # via datasets
     # via evaluate

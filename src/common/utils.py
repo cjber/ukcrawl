@@ -21,6 +21,39 @@ class Consts:
 
     PCRE = r"[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}"
 
+    CLASS_MODEL = "distilbert/distilbert-base-uncased"
+
+
+class Labels:
+    ID2LABEL = {
+        0: "Government, Law & Politics",
+        1: "Libraries, Archives and Museums",
+        2: "Publishing, Printing and Bookselling",
+        3: "Popular Science",
+        4: "Social Problems and Welfare",
+        5: "Crime, Criminology, Police and Prisons",
+        6: "Life Sciences",
+        7: "Politics, Political Theory and Political Systems",
+        8: "Sports and Recreation",
+        9: "Literature",
+        10: "Company Web Sites",
+        11: "Law and Legal System",
+        12: "Digital Society",
+        13: "History",
+        14: "Environment",
+        15: "Business, Economy & Industry",
+        16: "Science & Technology",
+        17: "Society & Culture",
+        18: "Education & Research",
+        19: "Travel & Tourism",
+        20: "Arts & Humanities",
+        21: "Religion",
+        22: "Medicine & Health",
+        23: "Computer Science, Information Technology and Web Technology",
+    }
+    LABEL2ID = {v: k for k, v in ID2LABEL.items()}
+    COUNT = len(ID2LABEL)
+
 
 class Paths:
     DATA = Path("data")
