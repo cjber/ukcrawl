@@ -19,10 +19,11 @@ class PolarsDataset(torch.utils.data.Dataset):
         )
 
         self.data = Dataset.from_polars(
-            pl.read_parquet(path, columns=["Primary Category", "content", "URL"])
-            .rename({"Primary Category": "label_name", "content": "text"})
-            .unique("URL")
-            .drop("URL")
+            pl.read_parquet(path, columns=["url", "content", "category"])
+            .filter(pl.col("category").is_in(Labels.LABELS))
+            .rename({"category": "label_name", "content": "text"})
+            .unique("url")
+            .drop("url")
             .with_columns(
                 pl.col("label_name").replace(Labels.LABEL2ID).cast(int).alias("label")
             )

@@ -47,7 +47,7 @@ def run() -> None:
 
     datamodule: L.LightningDataModule = DataModule(
         dataset=PolarsDataset(
-            path=Path("./data/classification/classification.parquet")
+            path=Path("./data/classification/synthetic_data.parquet")
         ),
         num_workers=int(os.cpu_count() or 1),
         seed=42,
