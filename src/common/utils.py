@@ -2,6 +2,7 @@ import re
 import warnings
 from pathlib import Path
 
+import polars as pl
 import pyarrow.parquet as pq
 import tldextract
 from dagster import Backoff, ExperimentalWarning, RetryPolicy
@@ -26,32 +27,12 @@ class Consts:
 
 
 class Labels:
-    ID2LABEL = {
-        0: "Government, Law & Politics",
-        1: "Libraries, Archives and Museums",
-        2: "Publishing, Printing and Bookselling",
-        3: "Popular Science",
-        4: "Social Problems and Welfare",
-        5: "Crime, Criminology, Police and Prisons",
-        6: "Life Sciences",
-        7: "Politics, Political Theory and Political Systems",
-        8: "Sports and Recreation",
-        9: "Literature",
-        10: "Company Web Sites",
-        11: "Law and Legal System",
-        12: "Digital Society",
-        13: "History",
-        14: "Environment",
-        15: "Business, Economy & Industry",
-        16: "Science & Technology",
-        17: "Society & Culture",
-        18: "Education & Research",
-        19: "Travel & Tourism",
-        20: "Arts & Humanities",
-        21: "Religion",
-        22: "Medicine & Health",
-        23: "Computer Science, Information Technology and Web Technology",
-    }
+    with open("./data/classification/categories.txt") as f:
+        LABELS = f.read().splitlines()
+    data = pl.read_parquet("./data/classification/synthetic_data.parquet").filter(
+        pl.col("category").is_in(LABELS)
+    )
+    ID2LABEL = dict(enumerate(data["category"].unique()))
     LABEL2ID = {v: k for k, v in ID2LABEL.items()}
     COUNT = len(ID2LABEL)
 
