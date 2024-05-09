@@ -2,6 +2,7 @@ import re
 import warnings
 from pathlib import Path
 
+import pyarrow.parquet as pq
 import tldextract
 from dagster import Backoff, ExperimentalWarning, RetryPolicy
 from dotenv import load_dotenv
@@ -104,3 +105,11 @@ def process_record(record) -> dict:
 
 
 retry_policy = RetryPolicy(max_retries=5, delay=60, backoff=Backoff.EXPONENTIAL)
+
+
+def check_parquet_readable(file_path):
+    try:
+        pq.read_table(file_path, columns=[])
+        return True
+    except Exception:
+        return False
