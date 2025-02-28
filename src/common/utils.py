@@ -5,10 +5,8 @@ from pathlib import Path
 import polars as pl
 import pyarrow.parquet as pq
 import tldextract
-from dagster import Backoff, ExperimentalWarning, RetryPolicy
+from dagster import Backoff, RetryPolicy
 from dotenv import load_dotenv
-
-warnings.filterwarnings("ignore", category=ExperimentalWarning)
 
 load_dotenv()
 
