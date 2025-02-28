@@ -1,0 +1,79 @@
+---
+title: "UKCrawl: Data Overview"
+format: 
+  PrettyPDF-pdf: default
+  docx: default
+execute:
+  freeze: auto
+  echo: false
+---
+
+# Introduction
+
+UKCrawl provides a complete collection of top-level domain (TLD) URLs (e.g. bbc.co.uk) that use the '.uk' country code top-level domain (ccTLD), geolocated using their most frequently occurring postcode coordinate location.
+
+# Data Format
+
+This data comes split by year (e.g. `ukcrawl-2019.parquet`), each file therefore contains all UK TLDs and associated postcodes that were scraped by the Common Crawl for that particular year. For any URL that was scraped multiple times in a single year, the most recent is used to retrieve postcodes. All webpages associated with these URLs are also processed in this manner, and used to associate postcodes with their respective TLD.
+
+# Data Observations
+
+## Inconsistent Crawl Sizes
+
+When retrieving the Common Crawl data, there was a notable drop in the total number of UK URLs that were retrieved for the final archive of 2022 and throughout 2023.
+
+![Number of URLs per archive](./figs/url_by_archive.png)
+
+As expected, this drop in URLs also resulted in a decrease in the number of postcodes that were retrieved for these years.
+
+|      | 2019    | 2020    | 2021    | 2022    | 2023    | 2024    |
+|------|---------|---------|---------|---------|---------|---------|
+| URLs | 989,514 | 885,598 | 895,663 | **768,846** | **428,967** | 554,723 |
+
+The Common Crawl team have confirmed that an issue with their crawl configuration during these archives resulted in the exclusion of both the 'co.uk' and 'org.uk' 2-level ccTLDs. The erratum note may be found [here](https://commoncrawl.org/errata/co-uk-cctld-not-included).
+
+## Number of Postcodes per Website
+
+```{python} 
+import polars as pl
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+custom_params = {"axes.spines.right": False, "axes.spines.top": False}
+sns.set_theme(style="ticks", rc=custom_params)
+
+df = (
+    pl.scan_parquet("./data/out/pc_year/*.parquet")
+    .with_columns(pl.col("all_postcodes").list.len().alias("pc_count"))
+    .select(["url", "pc_count", "year"])
+    .collect()
+)
+one_pc = len(df.filter(pl.col("pc_count") == 1)) / len(df)
+max_pc = df.filter(pl.col("pc_count") == pl.col("pc_count").max())
+large_pc = len(df.filter(pl.col("pc_count") > 1000))
+```
+
+The number of postcodes found per website is highly skewed; many websites have only one postcode associated with them (`{python} f"{one_pc:.2%}"`), while certain websites have a disproportionally large number of postcodes. For example, the website '`{python} max_pc["url"].item()`' has `{python} f"{max_pc['pc_count'].item():,}"` associated postcodes. In total, `{python} f"{large_pc:,}"` websites have over 1,000 associated postcodes.
+
+The following figure shows the distribution of the number of postcodes by website for each year, excluding outliers.
+
+```{python} 
+#| fig-cap: "Number of postcodes per website"
+
+sns.boxplot(data=df, x="year", y="pc_count", showfliers=False)
+plt.show()
+```
+
+\newpage
+
+## Number of Websites per Area Population
+
+To understand the distribution of websites across the UK, we aggregate the number of URLs into Local Authority Districts (LADs) on the following figure.
+
+```{python} 
+#| fig-cap: "Number of websites per LAD"
+
+from reports.figs import pop_oa
+
+plt.show()
+```
