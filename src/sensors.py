@@ -15,7 +15,10 @@ from src.jobs import extract_uk_urls_job, process_job
 from src.partitions import archive_partition
 
 
-@sensor(job=extract_uk_urls_job, default_status=DefaultSensorStatus.RUNNING)
+@sensor(
+    job=extract_uk_urls_job,
+    # default_status=DefaultSensorStatus.RUNNING,
+)
 def release_sensor(context: SensorEvaluationContext):
     if not Paths.RELEASES.exists():
         yield SkipReason(f"{Paths.RELEASES} does not exist.")
@@ -45,7 +48,7 @@ def release_sensor(context: SensorEvaluationContext):
 @asset_sensor(
     asset_key=AssetKey("combined_files"),
     job=process_job,
-    default_status=DefaultSensorStatus.RUNNING,
+    # default_status=DefaultSensorStatus.RUNNING,
 )
 def process_sensor(context: SensorEvaluationContext):
     if not Paths.RELEASES.exists():
